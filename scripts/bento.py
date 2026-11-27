@@ -23,8 +23,9 @@ TAGLINE = "Je conçois des produits web modernes, rapides et utiles."
 STATUS = "Disponible pour de nouveaux projets"
 FOCUS_TITLE = "En ce moment"
 FOCUS_LINES = ["Plateformes e-commerce,", "outils de gestion &", "applications éducatives."]
-STACK = ["TypeScript", "JavaScript", "React", "Next.js", "Node.js", "Tailwind CSS",
-         "HTML", "CSS", "PostgreSQL", "MySQL", "Git", "Vercel"]
+LANGUAGES = ["Python", "TypeScript", "JavaScript", "Java", "PHP", "SQL"]
+STACK = ["React", "Next.js", "Node.js", "Express", "Tailwind CSS",
+         "PostgreSQL", "MySQL", "Git", "Vercel"]
 
 # ── Design ────────────────────────────────────────────────────────
 W = 1200
@@ -253,22 +254,17 @@ def build(data):
     out.append(tile(0, y, hw, h2, heat))
 
     lw = W - hw - GAP
-    bar_w = lw - 56
-    bx = 28
-    segs = []
-    for i, (name, v) in enumerate(top):
-        w = max(4, bar_w * v / total_bytes)
-        segs.append(f'<rect x="{bx:.1f}" y="70" width="{max(0, w-3):.1f}" height="12" rx="3" fill="{LANG_COLORS[i]}"/>')
-        bx += w
-    rows = []
-    for i, (name, v) in enumerate(top):
-        cx = 28 + (i % 2) * (lw / 2 - 14)
-        cy = 118 + (i // 2) * 34
-        pct = 100 * v / total_bytes
-        rows.append(f'<circle cx="{cx+5}" cy="{cy-4}" r="5" fill="{LANG_COLORS[i]}"/>'
-                    f'<text x="{cx+18}" y="{cy+1}" font-family="{SANS}" font-size="14.5" font-weight="500" fill="#E4E4E7">{escape(name)}</text>'
-                    f'<text x="{cx + lw/2 - 40}" y="{cy+1}" text-anchor="end" font-family="{MONO}" font-size="12.5" fill="#71717A">{pct:.1f}%</text>')
-    out.append(tile(hw + GAP, y, lw, h2, label(28, 44, "Langages") + "".join(segs) + "".join(rows)))
+    pw = (lw - 56 - 12) / 2
+    chips = []
+    for i, name in enumerate(LANGUAGES[:6]):
+        cx = 28 + (i % 2) * (pw + 12)
+        cy = 70 + (i // 2) * 44
+        c = LANG_COLORS[i]
+        chips.append(f'<g transform="translate({cx:.1f} {cy})">'
+                     f'<rect width="{pw:.1f}" height="36" rx="11" fill="{c}" fill-opacity=".07" stroke="{c}" stroke-opacity=".35"/>'
+                     f'<circle cx="20" cy="18" r="5" fill="{c}"/>'
+                     f'<text x="36" y="23.5" font-family="{SANS}" font-size="15.5" font-weight="600" fill="#F4F4F5">{escape(name)}</text></g>')
+    out.append(tile(hw + GAP, y, lw, h2, label(28, 44, "Langages") + "".join(chips)))
     y += h2 + GAP
 
     # ── Rangée 3 : stack + focus ───────────────────────────────
